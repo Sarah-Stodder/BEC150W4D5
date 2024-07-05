@@ -341,7 +341,7 @@ def get_orders():
         order_dict = {
             "order_id": order.order_id,
             "customer_id": order.customer_id,
-            "date": order.date.strftime("%Y-%m-%d"),
+            "date": order.date,
             "products": [product.product_id for product in order.products]
         }
         orders_with_products.append(order_dict)
@@ -413,9 +413,9 @@ def update_orders(order_id):
             order.customer_id = order_data.get('customer_id', order.customer_id)
             order.date = order_data.get('date', order.date)
 
-            # Handle product associations
+            # update products
             product_ids = order_data.get('product_id', [])
-            order.products.clear()  # Clear existing associations
+            order.products.clear()  # clear it out so we can start from scratch
 
             for product_id in product_ids:
                 product = session.query(Product).get(product_id)
